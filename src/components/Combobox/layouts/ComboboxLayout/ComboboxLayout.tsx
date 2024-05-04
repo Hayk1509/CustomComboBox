@@ -12,6 +12,7 @@ interface IComboboxLayoutProps<D>
     | "selectedOptionRenderer"
     | "selectedClassName"
     | "data"
+    | "name"
   > {
   value: D | string;
   onSubmit: (value: D | string) => void;
@@ -23,6 +24,7 @@ const ComboboxLayout = <D extends object = object>({
   data,
   onSubmit,
   value,
+  name,
   selectedOptionRendererTemplate,
   selectedOptionRenderer,
   selectedClassName,
@@ -80,7 +82,7 @@ const ComboboxLayout = <D extends object = object>({
           onClick={handleOnOpenDropdown}
           rightSectionPointerEvents="none"
         >
-          {render || <Input.Placeholder>Choose Country</Input.Placeholder>}
+          {render || <Input.Placeholder>{name}</Input.Placeholder>}
         </InputBase>
       </Combobox.Target>
       {children}

@@ -11,4 +11,14 @@ export class CountriesApi {
   ): Promise<AxiosResponse<CountryData[], any>> {
     return Api.Instance.get(`/name/${searchValue}`);
   }
+  static searchCountriesByCapital(
+    searchValue: string = ""
+  ): Promise<AxiosResponse<CountryData[], any>> {
+    return Api.Instance.get(`/capital/${searchValue}`);
+  }
+  static searchCountriesByLang(
+    searchValue: string = ""
+  ): Promise<AxiosResponse<CountryData[], any>> {
+    return Api.Instance.get(`/lang/${searchValue}`);
+  }
 }

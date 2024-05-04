@@ -84,7 +84,7 @@ export const SelectDropdownSearch = <D extends object = object>(
       setCurrentData(() => {
         return data.filter((item) =>
           nunjucks
-            .renderString(`{{${valuePropertyName}}}`, item)
+            .renderString(valuePropertyName, item)
             ?.toLowerCase()
             .includes(value)
         );
@@ -96,7 +96,7 @@ export const SelectDropdownSearch = <D extends object = object>(
   return (
     <Flex
       mih={50}
-      style={{ width: "300px" }}
+      style={{ width: "500px" }}
       gap="sm"
       direction="column"
       wrap="nowrap"
@@ -105,6 +105,7 @@ export const SelectDropdownSearch = <D extends object = object>(
       <Title order={3}>{name}</Title>
       <ComboboxLayout<D>
         data={data}
+        name={name}
         value={selectedItem}
         selectedClassName={selectedClassName}
         selectedOptionRendererTemplate={selectedOptionRendererTemplate}
@@ -120,6 +121,7 @@ export const SelectDropdownSearch = <D extends object = object>(
           />
           <ComboboxOptions
             data={currentData}
+            selectedItem={selectedItem}
             valuePropertyName={valuePropertyName}
             availableOptionRenderer={availableOptionRenderer}
             availableOptionRendererTemplate={availableOptionRendererTemplate}

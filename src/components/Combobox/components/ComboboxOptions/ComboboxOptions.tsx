@@ -1,8 +1,8 @@
-import { Combobox } from "@mantine/core";
+import { Box, Combobox } from "@mantine/core";
 import nunjucks from "nunjucks";
 import { ISelectDrowdownSearch } from "../../Combobox";
 import { ReactNode, useCallback } from "react";
-
+import { IconCheck } from "@tabler/icons-react";
 interface IComboboxOptionsProps<D>
   extends Pick<
     ISelectDrowdownSearch<D>,
@@ -10,6 +10,7 @@ interface IComboboxOptionsProps<D>
     | "availableOptionRendererTemplate"
     | "availableOptionRenderer"
     | "valuePropertyName"
+    | "selectedItem"
   > {}
 
 const ComboboxOptions = <D extends object = object>({
@@ -17,11 +18,12 @@ const ComboboxOptions = <D extends object = object>({
   valuePropertyName,
   availableOptionRenderer,
   availableOptionRendererTemplate,
+  selectedItem,
 }: IComboboxOptionsProps<D>) => {
   const render = useCallback<(item: D) => ReactNode>(
     (item: D) => {
+      const value: string = nunjucks.renderString(valuePropertyName, item);
       if (availableOptionRenderer) {
-        const value = nunjucks.renderString(`{{${valuePropertyName}}}`, item);
         return (
           <Combobox.Option key={value} value={value}>
             {availableOptionRenderer({ data: item })}
@@ -30,9 +32,14 @@ const ComboboxOptions = <D extends object = object>({
       } else {
         return (
           <Combobox.Option
-            key={nunjucks.renderString(`{{${valuePropertyName}}}`, item)}
-            value={nunjucks.renderString(`{{${valuePropertyName}}}`, item)}
+            style={{ display: "flex" }}
+            key={value}
+            value={value}
           >
+            <Box style={{ width: "30px", height: "30px" }}>
+              {nunjucks.renderString(valuePropertyName, item) ===
+                selectedItem && <IconCheck stroke={2} />}
+            </Box>
             {typeof item === "string"
               ? item
               : nunjucks.renderString(availableOptionRendererTemplate, item)}
@@ -43,6 +50,7 @@ const ComboboxOptions = <D extends object = object>({
     [
       availableOptionRenderer,
       availableOptionRendererTemplate,
+      selectedItem,
       valuePropertyName,
     ]
   );

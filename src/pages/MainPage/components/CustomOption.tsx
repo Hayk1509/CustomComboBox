@@ -4,8 +4,8 @@ import { CountriesApi } from "../../../services/CountriesApi";
 import { CountryData } from "../../../types/TypesCountry";
 import { NunjucksTemplates } from "../../../utils/constants";
 
-const ClientSideSearch = () => {
-  const template = NunjucksTemplates[6]
+const CustomOption = () => {
+    const template = NunjucksTemplates[3]
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
 
@@ -20,7 +20,7 @@ const ClientSideSearch = () => {
 
   return (
       <SelectDropdownSearch
-        name="Client Side Filter"
+        name="Find country by area"
         data={countries}
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
@@ -30,4 +30,4 @@ const ClientSideSearch = () => {
       />
   );
 };
-export default ClientSideSearch;
+export default CustomOption;
