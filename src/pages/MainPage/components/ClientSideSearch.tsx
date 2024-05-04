@@ -5,13 +5,18 @@ import { CountryData } from "../../../types/TypesCountry";
 import { NunjucksTemplates } from "../../../utils/constants";
 
 const ClientSideSearch = () => {
-  const template = NunjucksTemplates[6]
+  const template = NunjucksTemplates[6];
   const [countries, setCountries] = useState<CountryData[]>([]);
+  const [error, setError] = useState<null | string>(null);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
 
   const getCountries = useCallback(async () => {
-    const { data } = await CountriesApi.getCountries();
-    setCountries(data);
+    const { data, error } = await CountriesApi.getCountries();
+    if (data) {
+      setCountries(data);
+    } else {
+      setError(error);
+    }
   }, []);
 
   useEffect(() => {
@@ -19,15 +24,16 @@ const ClientSideSearch = () => {
   }, [getCountries]);
 
   return (
-      <SelectDropdownSearch
-        name="Client Side Filter"
-        data={countries}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        valuePropertyName={template}
-        selectedOptionRendererTemplate={template}
-        availableOptionRendererTemplate={template}
-      />
+    <SelectDropdownSearch
+      error={error}
+      name="Client Side Filter"
+      data={countries}
+      selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
+      valuePropertyName={template}
+      selectedOptionRendererTemplate={template}
+      availableOptionRendererTemplate={template}
+    />
   );
 };
 export default ClientSideSearch;

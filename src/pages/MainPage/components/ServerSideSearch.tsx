@@ -10,13 +10,19 @@ const ServerSideSearch = () => {
   const nunjucksTemplate = NunjucksTemplates[0];
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
+  const [error, setError] = useState<null | string>(null);
   const getCountry = async (search: string) => {
-    const { data } = await CountriesApi.searchCountries(search);
-    setCountries(data);
+    const { data, error } = await CountriesApi.searchCountries(search);
+    if (data) {
+      setCountries(data);
+    } else {
+      setError(error);
+    }
   };
 
   return (
     <SelectDropdownSearch
+      error={error}
       selectedOptionRenderer={(value: { data: CountryData | string }) => {
         const { data } = value as unknown as { data: CountryData };
         return (

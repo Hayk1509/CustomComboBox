@@ -7,13 +7,18 @@ const FindCountryByCapital = () => {
   const nunjucksTemplate = NunjucksTemplates[5];
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
+  const [error, setError] = useState<null | string>(null);
   const getCountry = async (search: string) => {
-    const { data } = await CountriesApi.searchCountriesByCapital(search);
-    setCountries(data);
+    const { data, error } = await CountriesApi.searchCountriesByCapital(search);
+    if (data) {
+      setCountries(data);
+    } else {
+      setError(error);
+    }
   };
-
   return (
     <SelectDropdownSearch
+    error={error}
       name="Find your country by capital"
       data={countries}
       selectedItem={selectedItem}

@@ -1,26 +1,10 @@
 import { Combobox, Flex, Title } from "@mantine/core";
 import nunjucks from "nunjucks";
-import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import ComboboxLayout from "./layouts/ComboboxLayout/ComboboxLayout";
 import ComboboxOptions from "./components/ComboboxOptions/ComboboxOptions";
 import { useDebounce } from "../../hooks/useDebounce";
-
-export interface ISelectDrowdownSearch<D> {
-  name: string;
-  data: D[];
-  selectedItem: D | string;
-  valuePropertyName: string;
-  // Templates
-  selectedOptionRendererTemplate: string;
-  availableOptionRendererTemplate: string;
-  selectedOptionRenderer?: FC<{ data: D | string }>;
-  availableOptionRenderer?: FC<{ data: D | string }>;
-  // Styles
-  className?: string;
-  searchBoxClassName?: string;
-  selectedClassName?: string;
-  setSelectedItem: (value: D | string) => void;
-}
+import { ISelectDrowdownSearch } from "../../types/ComboboxTypes";
 
 interface ISelectDrowdownSearchCSR<D extends object = object>
   extends ISelectDrowdownSearch<D> {
@@ -50,6 +34,7 @@ export const SelectDropdownSearch = <D extends object = object>(
     className,
     searchBoxClassName,
     selectedClassName,
+    error,
   } = props;
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -120,6 +105,7 @@ export const SelectDropdownSearch = <D extends object = object>(
             placeholder="Search countries"
           />
           <ComboboxOptions
+            error={error}
             data={currentData}
             selectedItem={selectedItem}
             valuePropertyName={valuePropertyName}

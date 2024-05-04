@@ -8,13 +8,13 @@ import FindCountryByLanguage from "./components/FindCountryByLanguage";
 
 const MainPage = () => {
   return (
-    <Flex gap={50} wrap={'wrap'} style={{padding:"20px"}}>
+    <Flex gap={50} wrap={"wrap"} style={{ padding: "20px" }}>
       <ClientSideSearch />
       <ServerSideSearch />
       <CustomOption />
-      <FifaCoutrySearch/>
-      <FindCountryByCapital/>
-      <FindCountryByLanguage/>
+      <FifaCoutrySearch />
+      <FindCountryByCapital />
+      <FindCountryByLanguage />
     </Flex>
   );
 };

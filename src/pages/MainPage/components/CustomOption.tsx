@@ -5,13 +5,18 @@ import { CountryData } from "../../../types/TypesCountry";
 import { NunjucksTemplates } from "../../../utils/constants";
 
 const CustomOption = () => {
-    const template = NunjucksTemplates[3]
+  const template = NunjucksTemplates[3];
   const [countries, setCountries] = useState<CountryData[]>([]);
+  const [error, setError] = useState<null | string>(null);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
 
   const getCountries = useCallback(async () => {
-    const { data } = await CountriesApi.getCountries();
-    setCountries(data);
+    const { data, error } = await CountriesApi.getCountries();
+    if (data) {
+      setCountries(data);
+    } else {
+      setError(error);
+    }
   }, []);
 
   useEffect(() => {
@@ -19,15 +24,16 @@ const CustomOption = () => {
   }, [getCountries]);
 
   return (
-      <SelectDropdownSearch
-        name="Find country by area"
-        data={countries}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        valuePropertyName={template}
-        selectedOptionRendererTemplate={template}
-        availableOptionRendererTemplate={template}
-      />
+    <SelectDropdownSearch
+      error={error}
+      name="Find country by area"
+      data={countries}
+      selectedItem={selectedItem}
+      setSelectedItem={setSelectedItem}
+      valuePropertyName={template}
+      selectedOptionRendererTemplate={template}
+      availableOptionRendererTemplate={template}
+    />
   );
 };
 export default CustomOption;

@@ -7,13 +7,19 @@ const FindCountryByLanguage = () => {
   const nunjucksTemplate = NunjucksTemplates[2];
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
+  const [error, setError] = useState<null | string>(null);
   const getCountry = async (search: string) => {
-    const { data } = await CountriesApi.searchCountriesByLang(search);
-    setCountries(data);
+    const { data, error } = await CountriesApi.searchCountriesByLang(search);
+    if (data) {
+      setCountries(data);
+    } else {
+      setError(error);
+    }
   };
 
   return (
     <SelectDropdownSearch
+      error={error}
       name="Find your country by language"
       data={countries}
       selectedItem={selectedItem}

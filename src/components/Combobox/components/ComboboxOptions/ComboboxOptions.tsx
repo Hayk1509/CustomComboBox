@@ -1,8 +1,8 @@
-import { Box, Combobox } from "@mantine/core";
+import { Box, Combobox, Text } from "@mantine/core";
 import nunjucks from "nunjucks";
-import { ISelectDrowdownSearch } from "../../Combobox";
 import { ReactNode, useCallback } from "react";
 import { IconCheck } from "@tabler/icons-react";
+import { ISelectDrowdownSearch } from "../../../../types/ComboboxTypes";
 interface IComboboxOptionsProps<D>
   extends Pick<
     ISelectDrowdownSearch<D>,
@@ -11,6 +11,7 @@ interface IComboboxOptionsProps<D>
     | "availableOptionRenderer"
     | "valuePropertyName"
     | "selectedItem"
+    | "error"
   > {}
 
 const ComboboxOptions = <D extends object = object>({
@@ -19,6 +20,7 @@ const ComboboxOptions = <D extends object = object>({
   availableOptionRenderer,
   availableOptionRendererTemplate,
   selectedItem,
+  error,
 }: IComboboxOptionsProps<D>) => {
   const render = useCallback<(item: D) => ReactNode>(
     (item: D) => {
@@ -57,7 +59,9 @@ const ComboboxOptions = <D extends object = object>({
 
   return (
     <Combobox.Options>
-      {data.length > 0 ? (
+      {error ? (
+        <Text c="teal.4">{error}</Text>
+      ) : data.length > 0 ? (
         data.map(render)
       ) : (
         <Combobox.Empty>Nothing found</Combobox.Empty>

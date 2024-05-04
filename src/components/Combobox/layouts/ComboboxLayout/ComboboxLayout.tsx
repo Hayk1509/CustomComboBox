@@ -1,7 +1,7 @@
 import { Combobox, Input, InputBase, useCombobox } from "@mantine/core";
 import nunjucks from "nunjucks";
-import { ISelectDrowdownSearch } from "../../Combobox";
 import { ReactNode, useMemo } from "react";
+import { ISelectDrowdownSearch } from "../../../../types/ComboboxTypes";
 
 nunjucks.configure({ autoescape: true });
 
