@@ -1,4 +1,11 @@
-import { Combobox, Input, InputBase, Loader, useCombobox } from "@mantine/core";
+import {
+  CloseButton,
+  Combobox,
+  Input,
+  InputBase,
+  Loader,
+  useCombobox,
+} from "@mantine/core";
 import nunjucks from "nunjucks";
 import { ReactNode, useMemo } from "react";
 import { ISelectDrowdownSearch } from "../../../../types/ComboboxTypes";
@@ -14,6 +21,7 @@ interface IComboboxLayoutProps<D>
     | "data"
     | "name"
     | "loading"
+    | "isClearIcon"
   > {
   value: D | string;
   onSubmit: (value: D | string) => void;
@@ -30,6 +38,7 @@ const ComboboxLayout = <D extends object = object>({
   selectedOptionRendererTemplate,
   selectedOptionRenderer,
   selectedClassName,
+  isClearIcon,
 }: IComboboxLayoutProps<D>) => {
   const combobox = useCombobox({
     onDropdownClose: () => {
@@ -56,7 +65,7 @@ const ComboboxLayout = <D extends object = object>({
         data.find(
           (option) =>
             nunjucks.renderString(selectedOptionRendererTemplate, option) ===
-            (value as string),
+            (value as string)
         ) || value;
       return selectedOptionRenderer({
         data: currentOption,
@@ -81,8 +90,20 @@ const ComboboxLayout = <D extends object = object>({
           type="button"
           pointer
           onClick={handleOnOpenDropdown}
-          rightSectionPointerEvents="none"
-          rightSection={loading ? <Loader size={18} /> : <Combobox.Chevron />}
+          rightSection={
+            loading ? (
+              <Loader size={18} />
+            ) : value !== "" && isClearIcon ? (
+              <CloseButton
+                size="sm"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => onSubmit("")}
+                aria-label="Clear value"
+              />
+            ) : (
+              <Combobox.Chevron />
+            )
+          }
         >
           {render || <Input.Placeholder>{name}</Input.Placeholder>}
         </InputBase>

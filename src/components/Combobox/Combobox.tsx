@@ -36,6 +36,7 @@ export const SelectDropdownSearch = <D extends object = object>(
     selectedClassName,
     error,
     loading,
+    isClearIcon,
   } = props;
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -98,6 +99,7 @@ export const SelectDropdownSearch = <D extends object = object>(
         selectedOptionRendererTemplate={selectedOptionRendererTemplate}
         selectedOptionRenderer={selectedOptionRenderer}
         onSubmit={setSelectedItem}
+        isClearIcon={isClearIcon}
       >
         <Combobox.Dropdown>
           <Combobox.Search

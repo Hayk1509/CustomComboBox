@@ -4,7 +4,7 @@ import { CountriesApi } from "../../../services/CountriesApi";
 import { CountryData } from "../../../types/TypesCountry";
 import { NunjucksTemplates } from "../../../utils/constants";
 import useRequest from "../../../hooks/useRequest";
-
+import "./index.css"
 const CustomOption = () => {
   const template = NunjucksTemplates[3];
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
@@ -24,6 +24,8 @@ const CustomOption = () => {
       valuePropertyName={template}
       selectedOptionRendererTemplate={template}
       availableOptionRendererTemplate={template}
+      searchBoxClassName="colored-background-selected-item"
+      isClearIcon={true}
     />
   );
 };
