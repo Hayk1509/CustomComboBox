@@ -1,26 +1,23 @@
 import { useState } from "react";
 import { SelectDropdownSearch } from "../../../components/Combobox/Combobox";
+import useRequest from "../../../hooks/useRequest";
 import { CountriesApi } from "../../../services/CountriesApi";
 import { CountryData } from "../../../types/TypesCountry";
 import { NunjucksTemplates } from "../../../utils/constants";
+
 const FindCountryByCapital = () => {
   const nunjucksTemplate = NunjucksTemplates[5];
-  const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
-  const [error, setError] = useState<null | string>(null);
+  const { loading, error, data, fetchData } = useRequest();
   const getCountry = async (search: string) => {
-    const { data, error } = await CountriesApi.searchCountriesByCapital(search);
-    if (data) {
-      setCountries(data);
-    } else {
-      setError(error);
-    }
+    fetchData(() => CountriesApi.searchCountriesByCapital(search));
   };
   return (
     <SelectDropdownSearch
-    error={error}
+      loading={loading}
+      error={error}
       name="Find your country by capital"
-      data={countries}
+      data={data}
       selectedItem={selectedItem}
       useServerSideSearch
       onOptionSearch={getCountry}

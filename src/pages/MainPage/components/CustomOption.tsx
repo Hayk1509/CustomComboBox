@@ -1,33 +1,24 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SelectDropdownSearch } from "../../../components/Combobox/Combobox";
 import { CountriesApi } from "../../../services/CountriesApi";
 import { CountryData } from "../../../types/TypesCountry";
 import { NunjucksTemplates } from "../../../utils/constants";
+import useRequest from "../../../hooks/useRequest";
 
 const CustomOption = () => {
   const template = NunjucksTemplates[3];
-  const [countries, setCountries] = useState<CountryData[]>([]);
-  const [error, setError] = useState<null | string>(null);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
-
-  const getCountries = useCallback(async () => {
-    const { data, error } = await CountriesApi.getCountries();
-    if (data) {
-      setCountries(data);
-    } else {
-      setError(error);
-    }
-  }, []);
-
+  const { loading, error, data, fetchData } = useRequest();
   useEffect(() => {
-    getCountries();
-  }, [getCountries]);
+    fetchData(() => CountriesApi.getCountries());
+  }, [fetchData]);
 
   return (
     <SelectDropdownSearch
+      loading={loading}
       error={error}
       name="Find country by area"
-      data={countries}
+      data={data}
       selectedItem={selectedItem}
       setSelectedItem={setSelectedItem}
       valuePropertyName={template}

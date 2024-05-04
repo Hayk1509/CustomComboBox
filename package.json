@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
+    "@types/node": "^20.12.8",
     "@types/nunjucks": "^3.2.6",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

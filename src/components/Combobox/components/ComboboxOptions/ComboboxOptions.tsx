@@ -54,7 +54,7 @@ const ComboboxOptions = <D extends object = object>({
       availableOptionRendererTemplate,
       selectedItem,
       valuePropertyName,
-    ]
+    ],
   );
 
   return (

@@ -16,4 +16,5 @@ export interface ISelectDrowdownSearch<D> {
     selectedClassName?: string;
     setSelectedItem: (value: D | string) => void;
     error: string | null;
+    loading?: boolean
   }

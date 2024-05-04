@@ -3,5 +3,5 @@
 import { FC, ReactNode } from "react";
 
 declare global {
-    type FCC<P extends object = object> = FC<{ children: ReactNode } & P>
+  type FCC<P extends object = object> = FC<{ children: ReactNode } & P>;
 }

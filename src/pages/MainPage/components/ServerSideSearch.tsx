@@ -1,28 +1,24 @@
+import { Flex } from "@mantine/core";
 import { useState } from "react";
 import { SelectDropdownSearch } from "../../../components/Combobox/Combobox";
+import useRequest from "../../../hooks/useRequest";
 import { CountriesApi } from "../../../services/CountriesApi";
 import { CountryData } from "../../../types/TypesCountry";
-import nunjucks from "nunjucks";
 import { NunjucksTemplates } from "../../../utils/constants";
-import { Flex } from "@mantine/core";
+import nunjucks from "nunjucks";
 
 const ServerSideSearch = () => {
   const nunjucksTemplate = NunjucksTemplates[0];
-  const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
-  const [error, setError] = useState<null | string>(null);
+  const { loading, error, data, fetchData } = useRequest();
   const getCountry = async (search: string) => {
-    const { data, error } = await CountriesApi.searchCountries(search);
-    if (data) {
-      setCountries(data);
-    } else {
-      setError(error);
-    }
+    fetchData(() => CountriesApi.searchCountries(search));
   };
 
   return (
     <SelectDropdownSearch
       error={error}
+      loading={loading}
       selectedOptionRenderer={(value: { data: CountryData | string }) => {
         const { data } = value as unknown as { data: CountryData };
         return (
@@ -37,7 +33,7 @@ const ServerSideSearch = () => {
         );
       }}
       name="Server Side Filter"
-      data={countries}
+      data={data}
       selectedItem={selectedItem}
       useServerSideSearch
       onOptionSearch={getCountry}

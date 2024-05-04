@@ -35,6 +35,7 @@ export const SelectDropdownSearch = <D extends object = object>(
     searchBoxClassName,
     selectedClassName,
     error,
+    loading,
   } = props;
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -71,7 +72,7 @@ export const SelectDropdownSearch = <D extends object = object>(
           nunjucks
             .renderString(valuePropertyName, item)
             ?.toLowerCase()
-            .includes(value)
+            .includes(value.toLowerCase())
         );
       });
     },
@@ -91,6 +92,7 @@ export const SelectDropdownSearch = <D extends object = object>(
       <ComboboxLayout<D>
         data={data}
         name={name}
+        loading={loading}
         value={selectedItem}
         selectedClassName={selectedClassName}
         selectedOptionRendererTemplate={selectedOptionRendererTemplate}

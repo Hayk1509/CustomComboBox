@@ -3,24 +3,22 @@ import { SelectDropdownSearch } from "../../../components/Combobox/Combobox";
 import { CountriesApi } from "../../../services/CountriesApi";
 import { CountryData } from "../../../types/TypesCountry";
 import nunjucks from "nunjucks";
-import { NunjucksTemplates } from "../../../utils/constants";
 import { Flex } from "@mantine/core";
+import useRequest from "../../../hooks/useRequest";
+import { NunjucksTemplates } from "../../../utils/constants";
+
 const FifaCoutrySearch = () => {
   const nunjucksTemplate = NunjucksTemplates[4];
-  const [countries, setCountries] = useState<CountryData[]>([]);
   const [selectedItem, setSelectedItem] = useState<CountryData | string>("");
-  const [error, setError] = useState<null | string>(null);
+  const { loading, error, data, fetchData } = useRequest();
   const getCountry = async (search: string) => {
-    const { data, error } = await CountriesApi.searchCountries(search);
-    if (data) {
-      setCountries(data);
-    } else {
-      setError(error);
-    }
+    fetchData(() => CountriesApi.searchCountries(search));
   };
+
   return (
     <SelectDropdownSearch
       error={error}
+      loading={loading}
       selectedOptionRenderer={(value: { data: CountryData | string }) => {
         const { data } = value as unknown as { data: CountryData };
         return (
@@ -35,12 +33,12 @@ const FifaCoutrySearch = () => {
         );
       }}
       name="Find your fifa country"
-      data={countries}
+      data={data}
       selectedItem={selectedItem}
       useServerSideSearch
       onOptionSearch={getCountry}
       setSelectedItem={setSelectedItem}
-      valuePropertyName="{{fifa}}"
+      valuePropertyName={nunjucksTemplate}
       selectedOptionRendererTemplate={nunjucksTemplate}
       availableOptionRendererTemplate={nunjucksTemplate}
     />

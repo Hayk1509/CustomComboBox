@@ -1,4 +1,4 @@
-import { Combobox, Input, InputBase, useCombobox } from "@mantine/core";
+import { Combobox, Input, InputBase, Loader, useCombobox } from "@mantine/core";
 import nunjucks from "nunjucks";
 import { ReactNode, useMemo } from "react";
 import { ISelectDrowdownSearch } from "../../../../types/ComboboxTypes";
@@ -13,6 +13,7 @@ interface IComboboxLayoutProps<D>
     | "selectedClassName"
     | "data"
     | "name"
+    | "loading"
   > {
   value: D | string;
   onSubmit: (value: D | string) => void;
@@ -23,6 +24,7 @@ const ComboboxLayout = <D extends object = object>({
   children,
   data,
   onSubmit,
+  loading,
   value,
   name,
   selectedOptionRendererTemplate,
@@ -54,7 +56,7 @@ const ComboboxLayout = <D extends object = object>({
         data.find(
           (option) =>
             nunjucks.renderString(selectedOptionRendererTemplate, option) ===
-            value
+            (value as string),
         ) || value;
       return selectedOptionRenderer({
         data: currentOption,
@@ -78,9 +80,9 @@ const ComboboxLayout = <D extends object = object>({
           component="button"
           type="button"
           pointer
-          rightSection={<Combobox.Chevron />}
           onClick={handleOnOpenDropdown}
           rightSectionPointerEvents="none"
+          rightSection={loading ? <Loader size={18} /> : <Combobox.Chevron />}
         >
           {render || <Input.Placeholder>{name}</Input.Placeholder>}
         </InputBase>
